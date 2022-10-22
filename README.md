@@ -32,6 +32,20 @@ void testDeposit(BankAccount bankAccount) {
     assertEquals(500, bankAccount.getBalance());
 }
 ```
+Note that if there are multiple parameters, the injected instance must be the last argument:
+```java
+@ParameterizedTest
+@MethodSource("hello")
+void depositAndNameTest_withMethodSource(double amount, String name, BankAccount bankAccount) {
+    bankAccount.deposit(amount);
+    bankAccount.setHolderName(name);
+    assertAll(
+            () -> assertEquals(0, bankAccount.getMinimumBalance()),
+            () -> assertEquals(amount, bankAccount.getBalance()),
+            () -> assertEquals(name, bankAccount.getHolderName())
+    );
+}
+```
 
 ---
 #### ParameterizedTest and ValueSources

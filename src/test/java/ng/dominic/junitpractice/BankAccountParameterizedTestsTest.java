@@ -58,6 +58,7 @@ class BankAccountParameterizedTestsTest {
         bankAccount.deposit(amount);
         bankAccount.setHolderName(name);
         assertAll(
+                () -> assertEquals(0, bankAccount.getMinimumBalance()),
                 () -> assertEquals(amount, bankAccount.getBalance()),
                 () -> assertEquals(name, bankAccount.getHolderName())
         );

@@ -12,16 +12,24 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class BankAccountDITest {
 
     @Test
-    @DisplayName("Deposit 500 successully")
+    @DisplayName("Deposit 500 successfully")
     void testDeposit(BankAccount bankAccount) {
         bankAccount.deposit(500);
         assertEquals(500, bankAccount.getBalance());
+    }
+
+    @Test
+    @WithBalance("250")
+    @DisplayName("Initialized bankaccount with balance 250 successfully with annotation")
+    void testDepositInjected(BankAccount bankAccount) {
+        assertEquals(250, bankAccount.getBalance());
     }
 
     @Nested
     class whenBalanceEqualsZero {
 
         @Test
+        @WithBalance("0")
         void testWithdrawMinimumBalanceZero(BankAccount bankAccount) {
             assertThrows(RuntimeException.class, () -> bankAccount.withdraw(500));
         }

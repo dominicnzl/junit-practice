@@ -1,6 +1,8 @@
 package ng.dominic.junitpractice;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -11,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.DayOfWeek;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -71,5 +74,17 @@ class BankAccountParameterizedTestsTest {
                 Arguments.of(30.4, "Miep"),
                 Arguments.of(33, "Joop")
         );
+    }
+
+    // my colleague Hans Zuidervaart mentioned this:
+    @TestFactory
+    Stream<DynamicTest> testIsEven() {
+        return IntStream.iterate(0, i -> i + 2)
+                .limit(1000)
+                .mapToObj(this::testNrIsEven);
+    }
+
+    private DynamicTest testNrIsEven(int i) {
+        return DynamicTest.dynamicTest(i + " should be even", () -> assertEquals(0, i % 2));
     }
 }

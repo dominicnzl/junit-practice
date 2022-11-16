@@ -102,3 +102,19 @@ It's possible to execute tests depending on OS, JRE version and/or System proper
     @DisabledIfSystemProperty(named = "os.version", matches = "x")
     @EnabledIfEnvironmentVariable(named = "USERNAME", matches = "henk")
 ```
+
+---
+#### TestFactory
+My colleague Hans Zuidervaart has mentioned it's possible to create many tests with `@TestFactory`
+```java
+    @TestFactory
+    Stream<DynamicTest> testIsEven() {
+        return IntStream.iterate(0, i -> i + 2)
+                .limit(1000)
+                .mapToObj(this::testNrIsEven);
+    }
+
+    private DynamicTest testNrIsEven(int i) {
+        return DynamicTest.dynamicTest(i + " should be even", () -> assertEquals(0, i % 2));
+    }
+```
